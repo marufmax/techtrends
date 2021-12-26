@@ -3,13 +3,15 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"regexp"
+	"strconv"
 
 	"github.com/gocolly/colly"
 )
 
 // https://jobs.bdjobs.com/jobsearch.asp?fcatId=8&icatId=&JobKeyword=php
 type Job struct {
-	CatId   int    `json:"cat_id"`
+	//	CatId   int    `json:"cat_id"`
 	Keyword string `json:"keyword"`
 	Count   int    `json:"count"`
 }
@@ -27,9 +29,11 @@ func main() {
 
 	// On every a element which has href attribute call callback
 	collector.OnHTML("#TopTotalRecord", func(e *colly.HTMLElement) {
-		// count := e.Attr("span")
-
-		fmt.Println(e)
+		count, err := getJobCount(e.Text)
+		if err != nil {
+			fmt.Println("Error in parsing value. " + err.Error())
+		}
+		fmt.Println(count)
 	})
 
 	// Before making a request print "Visiting ..."
@@ -37,7 +41,7 @@ func main() {
 		fmt.Println("Visiting", r.URL.String())
 	})
 
-	collector.Visit("https://jobs.bdjobs.com/jobsearch.asp?fcatId=8&icatId=&JobKeyword=php")
+	collector.Visit("https://jobs.bdjobs.com/jobsearch.asp?fcatId=8&icatId=&JobKeyword=ruby")
 }
 
 func getRandomUserAgent() string {
@@ -52,4 +56,11 @@ func getRandomUserAgent() string {
 	}
 
 	return userAgents[rand.Int()%len(userAgents)]
+}
+
+func getJobCount(value string) (int, error) {
+	re := regexp.MustCompile("[0-9]+")
+	count := re.FindAllString(value, -1)
+
+	return strconv.Atoi(count[0])
 }
