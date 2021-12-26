@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  clickhouse_server:
+    image: yandex/clickhouse-server
+    ports: 
+      - "8123:8123"
+    volumes:
+      - "./data/clickhouse_db:/var/lib/clickhouse"
+      - "./docker-conf/clickhouse/config.xml:/etc/clickhouse-server/config.xml"
+      - "./docker-conf/clickhouse/users.xml:/etc/clickhouse-server/users.xml"
+    networks:
+      - techtrends
+  clickhouse_client:
+    image: yandex/clickhouse-client
+    entrypoint:
+      - /bin/sleep
+    command:
+      - infinity
+    networks:
+        - techtrends
+  bytebase:
+    image: bytebase/bytebase:0.10.0
+    restart: always
+    volumes:
+      - "./data/bytebase:/var/opt/bytebase"
+    ports:
+      - "5678:80"
+    networks:
+    - techtrends
+  
+networks:
+  techtrends:
+    driver: bridge
