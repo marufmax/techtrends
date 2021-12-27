@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/url"
+	"os"
 	"regexp"
 	"strconv"
 
 	"github.com/gocolly/colly"
+	"github.com/joho/godotenv"
 )
 
 // https://jobs.bdjobs.com/jobsearch.asp?fcatId=8&icatId=&JobKeyword=php
@@ -17,12 +20,15 @@ type Job struct {
 	Count   int    `json:"count"`
 }
 
-const CACHE_DIR = "./storage/cache"
-
 func main() {
-	count := getCount("Java Developer")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+		os.Exit(1)
+	}
+	job := getCount("Java Developer")
 
-	fmt.Println(count)
+	fmt.Println(job.Count)
 }
 
 func getRandomUserAgent() string {
@@ -39,11 +45,10 @@ func getRandomUserAgent() string {
 	return userAgents[rand.Int()%len(userAgents)]
 }
 
-func getCount(keyword string) int {
+func getCount(keyword string) Job {
 	collector := colly.NewCollector(
 		colly.AllowedDomains("jobs.bdjobs.com", "www.jobs.bdjobs.com"),
 		colly.UserAgent(getRandomUserAgent()),
-		colly.CacheDir(CACHE_DIR),
 	)
 
 	count := 0
@@ -63,7 +68,7 @@ func getCount(keyword string) int {
 
 	collector.Visit(getUrl(keyword))
 
-	return count
+	return Job{Keyword: keyword, Count: count}
 }
 
 func getUrl(keyword string) string {
