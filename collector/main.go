@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"net/url"
 	"regexp"
 	"strconv"
 
@@ -19,29 +20,9 @@ type Job struct {
 const CACHE_DIR = "./storage/cache"
 
 func main() {
-	// count := 0
+	count := getCount("Java Developer")
 
-	collector := colly.NewCollector(
-		colly.AllowedDomains("jobs.bdjobs.com", "www.jobs.bdjobs.com"),
-		colly.UserAgent(getRandomUserAgent()),
-		colly.CacheDir(CACHE_DIR),
-	)
-
-	// On every a element which has href attribute call callback
-	collector.OnHTML("#TopTotalRecord", func(e *colly.HTMLElement) {
-		count, err := getJobCount(e.Text)
-		if err != nil {
-			fmt.Println("Error in parsing value. " + err.Error())
-		}
-		fmt.Println(count)
-	})
-
-	// Before making a request print "Visiting ..."
-	collector.OnRequest(func(r *colly.Request) {
-		fmt.Println("Visiting", r.URL.String())
-	})
-
-	collector.Visit("https://jobs.bdjobs.com/jobsearch.asp?fcatId=8&icatId=&JobKeyword=ruby")
+	fmt.Println(count)
 }
 
 func getRandomUserAgent() string {
@@ -56,6 +37,37 @@ func getRandomUserAgent() string {
 	}
 
 	return userAgents[rand.Int()%len(userAgents)]
+}
+
+func getCount(keyword string) int {
+	collector := colly.NewCollector(
+		colly.AllowedDomains("jobs.bdjobs.com", "www.jobs.bdjobs.com"),
+		colly.UserAgent(getRandomUserAgent()),
+		colly.CacheDir(CACHE_DIR),
+	)
+
+	count := 0
+
+	collector.OnHTML("#TopTotalRecord", func(e *colly.HTMLElement) {
+		jobCount, err := getJobCount(e.Text)
+		if err != nil {
+			fmt.Println("Error in parsing value. " + err.Error())
+		}
+		count = jobCount
+	})
+
+	// Before making a request print "Visiting ..."
+	collector.OnRequest(func(r *colly.Request) {
+		fmt.Println("Visiting", r.URL.String())
+	})
+
+	collector.Visit(getUrl(keyword))
+
+	return count
+}
+
+func getUrl(keyword string) string {
+	return "https://jobs.bdjobs.com/jobsearch.asp?fcatId=8&icatId=&JobKeyword=" + url.QueryEscape(keyword)
 }
 
 func getJobCount(value string) (int, error) {

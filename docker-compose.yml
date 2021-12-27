@@ -1,26 +1,20 @@
 version: '3'
 
 services:
-  clickhouse_server:
-    image: yandex/clickhouse-server
+  db:
+    image: postgres:14.1
+    container_name: TT_DB
     ports: 
-      - "8123:8123"
+      - "5435:5432"
     volumes:
-      - "./data/clickhouse_db:/var/lib/clickhouse"
-      - "./docker-conf/clickhouse/config.xml:/etc/clickhouse-server/config.xml"
-      - "./docker-conf/clickhouse/users.xml:/etc/clickhouse-server/users.xml"
+      - "./data/postgres_data:/var/lib/postgresql/data/"
+    env_file:
+      - database.env
     networks:
       - techtrends
-  clickhouse_client:
-    image: yandex/clickhouse-client
-    entrypoint:
-      - /bin/sleep
-    command:
-      - infinity
-    networks:
-        - techtrends
   bytebase:
     image: bytebase/bytebase:0.10.0
+    container_name: TT_DB_CLIENT
     restart: always
     volumes:
       - "./data/bytebase:/var/opt/bytebase"

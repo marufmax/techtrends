@@ -9,7 +9,9 @@ This is a mono-repo of tech-trend. Here will contain all backend and front-end f
  - backend [APIs lives there]
 
  ### Credentials: 
- DB: 
+ This clickhouse installation included with [TabiX](https://tabix.io "Visit TabiX website")
+ DB: http://localhost:8123
+ host: http://127.0.0.1:8123 
  user: default
  pass: admin
  #### Tech Stack
