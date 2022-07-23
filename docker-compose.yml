@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  collector:
+    build: 
+      dockerfile: ./docker-conf/collector/Dockerfile
+      context: .
+    container_name: TT_COLLECTOR
+    volumes:
+      - ./collector:/data/collector
+    env_file: 
+      - collector/.env
+    networks:
+      - techtrends
   db:
     image: postgres:14.1
     container_name: TT_DB
@@ -12,16 +23,20 @@ services:
       - database.env
     networks:
       - techtrends
-  bytebase:
-    image: bytebase/bytebase:0.10.0
+  pgweb:
+    image: sosedoff/pgweb
     container_name: TT_DB_CLIENT
     restart: always
-    volumes:
-      - "./data/bytebase:/var/opt/bytebase"
     ports:
-      - "5678:80"
+      - "8089:8081"
+    links: 
+      - db:db  # my database container is called postgres, not db
     networks:
-    - techtrends
+      - techtrends
+    env_file: 
+      - database.env
+    depends_on:
+      - db
   
 networks:
   techtrends:

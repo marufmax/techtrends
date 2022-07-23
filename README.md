@@ -14,10 +14,21 @@ This is a mono-repo of tech-trend. Here will contain all backend and front-end f
  host: http://127.0.0.1:8123 
  user: default
  pass: admin
+
+## Roadmap (v1)
+[ ] - Scrape count from BDJobs
+
+[ ] - Save max count for a day in Database
+
+[ ] - Cron job or serverless function for invoking the collector
+
+[ ] - Backend API for showing the graph
+
+[ ] - Frontend for the graph with comparison
+
  #### Tech Stack
  [ ] Backend
   - Golang
-  - ClickHouse
   - Web framework (TBA)
 
  [ ] Frontend
