@@ -32,7 +32,7 @@ This is a mono-repo of tech-trend. Here will contain all backend and front-end f
 
  #### Tech Stack
  [ ] Backend
-  - Golang
+  - Golang for collecting data from Job sites
   - Web framework (TBA)
 
  [ ] Frontend
