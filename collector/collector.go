@@ -3,16 +3,11 @@ package collector
 import (
 	"context"
 	"fmt"
-	"github.com/joho/godotenv"
 	"github.com/marufmax/techtrends/crawler"
 	"github.com/marufmax/techtrends/db/models"
-	"sync"
 )
 
-var once sync.Once
-
 func Collect() {
-	loadEnv()
 	ctx := context.Background()
 	storeJobCount(ctx)
 }
@@ -47,10 +42,4 @@ func storeJobCount(ctx context.Context) {
 		fmt.Printf("Can not insert job count to the DB: %s", err)
 	}
 
-}
-
-func loadEnv() {
-	once.Do(func() {
-		godotenv.Load()
-	})
 }
