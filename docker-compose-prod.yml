@@ -23,20 +23,6 @@ services:
       - database.env
     networks:
       - techtrends
-  pgweb:
-    image: sosedoff/pgweb
-    container_name: TT_DB_CLIENT
-    restart: always
-    ports:
-      - "8089:8081"
-    links: 
-      - db:db
-    networks:
-      - techtrends
-    env_file: 
-      - database.env
-    depends_on:
-      - db
   
 networks:
   techtrends:

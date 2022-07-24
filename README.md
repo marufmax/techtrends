@@ -26,6 +26,10 @@ This is a mono-repo of tech-trend. Here will contain all backend and front-end f
 
 [ ] - Frontend for the graph with comparison
 
+[ ] - Tracing for Backend API
+
+[ ] - Tracing for Collector
+
  #### Tech Stack
  [ ] Backend
   - Golang
