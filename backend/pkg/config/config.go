@@ -4,14 +4,13 @@ import (
 	"fmt"
 	"github.com/joho/godotenv"
 	"os"
-	"strconv"
 )
 
 type Enviroment struct {
 	AppEnv     string
 	DBDSN      string
 	BugSnagKey string
-	AppPort    int
+	AppPort    string
 	AppVersion string
 }
 
@@ -35,7 +34,7 @@ func LoadEnvironment() {
 	Env.DBDSN = getEnv("DB_DSN", "host=127.0.0.1 user=techtrend password=trendy dbname=techtrend_local port=5435 sslmode=disable")
 	Env.AppEnv = getEnv("APP_ENV", "production")
 	Env.BugSnagKey = getEnv("BUGSNAG_KEY", "")
-	Env.AppPort, _ = strconv.Atoi(getEnv("APP_PORT", "5898"))
+	Env.AppPort = getEnv("APP_PORT", "5898")
 	Env.AppVersion = "v1.0.0"
 }
 

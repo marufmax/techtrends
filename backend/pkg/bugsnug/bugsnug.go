@@ -9,7 +9,7 @@ func Configure() {
 	bugsnag.Configure(bugsnag.Configuration{
 		APIKey:          config.Env.BugSnagKey,
 		ReleaseStage:    config.Env.AppEnv,
-		ProjectPackages: []string{"main", "github.com/marufmax/techtrends/api"},
+		ProjectPackages: []string{"main", "Run", "github.com/marufmax/techtrends/api"},
 		AppVersion:      config.Env.AppVersion,
 	})
 }
