@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS job_counts
     is_active     bool default true,
     crawl_date    date default current_date,
     created_at    timestamp(0) default now(),
-    updated_at    timestamp(0) default now()
+    updated_at    timestamp(0) default now(),
+    deleted_at    timestamp(0)
 );
 
 CREATE TABLE IF NOT EXISTS categories
@@ -18,7 +19,8 @@ CREATE TABLE IF NOT EXISTS categories
     name       varchar(255) not null,
     type       varchar(100),
     created_at timestamp(0) default now(),
-    updated_at    timestamp(0) default now()
+    updated_at    timestamp(0) default now(),
+    deleted_at    timestamp(0)
 );
 
 create unique index if not exists job_counts_category_id_crawl_date_uindex

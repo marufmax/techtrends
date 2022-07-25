@@ -1,11 +1,10 @@
 package postgres
 
 import (
-	"github.com/marufmax/techtrends/api/pkg/config"
+	"github.com/marufmax/techtrends/api/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
-	"os"
 	"time"
 )
 
@@ -15,27 +14,15 @@ type Postgres struct {
 	maxConnectionLifeTime time.Duration
 }
 
-const (
-	_defaultMaxIdleConnection     = 10
-	_defaultMaxOpenConnection     = 100
-	_defaultMaxConnectionLifeTime = time.Hour
-)
-
 // Connection New Database connection which return ORM
-func Connection(opts ...Option) (db *gorm.DB) {
+func Connection() (db *gorm.DB) {
 	pg := &Postgres{
-		maxIdleConnection:     _defaultMaxIdleConnection,
-		maxOpenConnection:     _defaultMaxOpenConnection,
-		maxConnectionLifeTime: _defaultMaxConnectionLifeTime,
+		maxIdleConnection:     config.App.DBMaxIdleConnection,
+		maxOpenConnection:     config.App.DBMaxOpenConnection,
+		maxConnectionLifeTime: config.App.DBMaxConnectionLifeTime,
 	}
 
-	// custom option
-	for _, opt := range opts {
-		opt(pg)
-	}
-	gorm.Open(postgres.Open(config.Env.DBDSN), &gorm.Config{})
-
-	db, err := gorm.Open(postgres.Open(os.Getenv("DB_DSN")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(config.Env.DatabaseURL), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal("Error connecting postgres", err)

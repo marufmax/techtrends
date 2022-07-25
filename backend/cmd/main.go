@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/marufmax/techtrends/api/internal/app"
-	"github.com/marufmax/techtrends/api/pkg/config"
+	"github.com/marufmax/techtrends/api/config"
+	"github.com/marufmax/techtrends/api/internal/http"
 )
 
 func main() {
 	config.LoadEnvironmentFile(".env")
-	app.Run()
+	config.CreateAppConfig()
+	http.Run()
 }

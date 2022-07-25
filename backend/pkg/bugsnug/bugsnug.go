@@ -2,7 +2,7 @@ package bugsnug
 
 import (
 	"github.com/bugsnag/bugsnag-go/v2"
-	"github.com/marufmax/techtrends/api/pkg/config"
+	"github.com/marufmax/techtrends/api/config"
 )
 
 func Configure() {
