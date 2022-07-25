@@ -16,25 +16,25 @@ This is a mono-repo of tech-trend. Here will contain all backend and front-end f
  pass: admin
 
 ## Roadmap (v1)
-[ ] - Scrape count from BDJobs
-
-[ ] - Save max count for a day in Database
-
-[ ] - Cron job or serverless function for invoking the collector
-
-[ ] - Backend API for showing the graph
-
-[ ] - Frontend for the graph with comparison
-
-[ ] - Tracing for Backend API
-
-[ ] - Tracing for Collector
+- [x]  Scrape count from BDJobs
+- [x] Save max count for a day in Database
+- [ ] Cron job or serverless function for invoking the collector
+- [ ] Backend API for showing the graph
+- [ ] Frontend for the graph with comparison
+- [ ] Tracing for Backend API
+- [x] Tracing for Collector
 
  #### Tech Stack
- [ ] Backend
-  - Golang for collecting data from Job sites
-  - Web framework (TBA)
-
- [ ] Frontend
-  - Nextjs
-  - Typescript
+ - [ ] Backend
+   - Golang
+   - PostgresSQL
+   - APIs are built upon [Echo Framework](https://echo.labstack.com)
+   - Database query are using [Gorm](https://gorm.io/index.html)
+   - Bugsnag for bug reporting
+ - [ ] Collector CLI
+   - Golang
+   - PostgresSQL
+   - Bugsnag for bugs
+ - [ ] Frontend
+   - Nextjs
+   - Typescript

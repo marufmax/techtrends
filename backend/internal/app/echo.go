@@ -8,10 +8,23 @@ import (
 	"time"
 )
 
-func New() *echo.Echo {
-	e := echo.New()
+type myEcho struct {
+	*echo.Echo
+}
 
-	// Middlewares
+func New() *myEcho {
+	e := myEcho{echo.New()}
+	e.defaultMiddlewares()
+	// configure default middlewares
+
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
+
+	return &e
+}
+
+func (e *myEcho) defaultMiddlewares() *myEcho {
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowMethods: []string{"GET"},
 		AllowOrigins: config.Env.AllowOrigins,
@@ -28,10 +41,6 @@ func New() *echo.Echo {
 	e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
 		Timeout: 30 * time.Second,
 	}))
-
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
 
 	return e
 }
