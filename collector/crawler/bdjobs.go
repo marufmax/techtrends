@@ -35,7 +35,7 @@ func GetCount(keyword string) (Job, error) {
 
 	// Set error handler
 	c.OnError(func(r *colly.Response, err error) {
-		bugsnag.Notify(fmt.Errorf("request URL: %s failed with response %v \n Error: %v", r.Request.URL, r, err))
+		bugsnag.Notify(fmt.Errorf("request URL: %s failed with response %v \n Error: %v", r.Request.URL, r, err), r.Ctx)
 	})
 
 	// Before making a request print "Visiting ..."

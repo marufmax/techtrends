@@ -3,6 +3,7 @@ package collector
 import (
 	"context"
 	"fmt"
+	"github.com/bugsnag/bugsnag-go/v2"
 	"github.com/marufmax/techtrends/crawler"
 	"github.com/marufmax/techtrends/db/models"
 )
@@ -39,7 +40,7 @@ func storeJobCount(ctx context.Context) {
 	_, err = models.InsertManyJobs(ctx, jobCounts)
 
 	if err != nil {
-		fmt.Printf("Can not insert job count to the DB: %s", err)
+		bugsnag.Notify(fmt.Errorf("could not insert job count to the DB: %s", err), ctx)
 	}
 
 }
